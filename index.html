@@ -1,187 +1,123 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DTA Miftahul Falah - Panel Guru</title>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DTA Miftahul Falah</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 <style>
-:root{--hijau:#1b8a5a;--hijau-muda:#e8f5e9;--hijau-tua:#146a45}
-*{font-family:'Poppins',sans-serif;box-sizing:border-box}
-body{margin:0;background:#f4f8f5}
-.app{display:flex;min-height:100vh}
-.sidebar{width:250px;background:var(--hijau);color:white;padding:20px;display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
-.brand{display:flex;gap:10px;align-items:center;margin-bottom:30px;font-size:18px}
-.sidebar button{width:100%;padding:12px;text-align:left;background:transparent;border:0;color:white;border-radius:8px;cursor:pointer;margin-bottom:5px;font-size:14px}
-.sidebar button.active,.sidebar button:hover{background:var(--hijau-tua)}
-.main{flex:1;padding:30px;overflow:auto}
-.page{display:none}.page.active{display:block}
-.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-top:15px}
-.card{background:white;padding:20px;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,.05)}
-.card.green{background:var(--hijau);color:white}
-.form-inline{display:flex;gap:10px;margin:15px 0;flex-wrap:wrap}
-input{padding:10px;border-radius:8px;border:1px solid #ccc;flex:1;min-width:120px}
-button{padding:10px 15px;border-radius:8px;border:0;background:var(--hijau);color:white;cursor:pointer;font-weight:600}
-table{width:100%;background:white;border-radius:12px;overflow:hidden;border-collapse:collapse;margin-top:10px}
-th{background:var(--hijau-muda);text-align:left;padding:12px;font-size:13px}
-td{padding:10px;border-top:1px solid #eee;font-size:14px}
-td input{width:65px;text-align:center}
-.btn-cetak{background:#0d2e1f}
-.profil-card{background:white;padding:20px;border-radius:12px;display:flex;flex-direction:column;gap:12px;max-width:400px}
-.kop{text-align:center;margin-bottom:20px;border-bottom:3px solid var(--hijau);padding-bottom:15px}
-.footer-sidebar{margin-top:auto;font-size:12px;opacity:.8}
-@media print{.no-print,.sidebar{display:none!important}.main{padding:0} table{box-shadow:none}}
-@media(max-width:768px){.app{flex-direction:column}.sidebar{width:100%;height:auto;position:relative}.cards{grid-template-columns:1fr}}
+:root{--hijau:#1b8a5a;--muda:#e8f5e9;--tua:#146a45}
+*{font-family:Poppins,sans-serif;box-sizing:border-box}body{margin:0;background:#f4f8f5}
+.app{display:flex;min-height:100vh}.sidebar{width:260px;background:var(--hijau);color:#fff;padding:20px;display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
+.profil-sidebar{text-align:center;margin-bottom:20px;padding:15px;background:rgba(255,255,255,.1);border-radius:12px}
+.profil-sidebar img{width:80px;height:80px;border-radius:50%;object-fit:cover;border:3px solid #fff;background:#fff}
+.sidebar button{width:100%;padding:12px;text-align:left;background:transparent;border:0;color:#fff;border-radius:8px;cursor:pointer;margin-bottom:5px}
+.sidebar button.active,.sidebar button:hover{background:var(--tua)}
+.main{flex:1;padding:25px}.page{display:none}.page.active{display:block}
+.card{background:#fff;padding:18px;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+table{width:100%;background:#fff;border-radius:12px;border-collapse:collapse;overflow:hidden;margin-top:10px}
+th{background:var(--muda);padding:10px;font-size:12px;text-align:left}td{padding:8px;border-top:1px solid #eee;font-size:13px}
+td input{width:52px;padding:6px;border-radius:6px;border:1px solid #ccc;text-align:center}
+.btn{background:var(--hijau);color:#fff;border:0;padding:10px 14px;border-radius:8px;cursor:pointer;font-weight:600}
+.kop{text-align:center;border-bottom:3px solid var(--hijau);padding-bottom:12px;margin-bottom:15px}
+.rank-1{background:#fff9c4!important;font-weight:bold}.rank-2{background:var(--muda)!important}.rank-3{background:#ffebee!important}
+.profil-foto-preview{width:120px;height:120px;border-radius:50%;object-fit:cover;border:4px solid var(--hijau);background:#eee;display:block;margin-bottom:10px}
+@media print{.no-print{display:none!important}.main{padding:0}}
 </style>
 </head>
 <body>
 <div class="app">
-  <aside class="sidebar no-print">
-    <div class="brand">🌿 <b>DTA Miftahul Falah</b></div>
-    <nav>
-      <button class="active" onclick="showPage('dashboard')">📊 Dashboard</button>
-      <button onclick="showPage('siswa')">👨‍🎓 Data Siswa</button>
-      <button onclick="showPage('nilai1')">📝 Nilai Sem. 1</button>
-      <button onclick="showPage('nilai2')">📝 Nilai Sem. 2</button>
-      <button onclick="showPage('raport')">📑 Rekap Raport</button>
-      <button onclick="showPage('profil')">👤 Profil Guru</button>
-    </nav>
-    <div class="footer-sidebar">© 2026 DTA Miftahul Falah - Siap Upload Github</div>
-  </aside>
+<aside class="sidebar no-print">
+<div class="profil-sidebar">
+<img id="sideFoto" src="https://ui-avatars.com/api/?name=Guru+DTA&background=ffffff&color=1b8a5a">
+<div id="sideNama" style="font-weight:600;margin-top:8px">Guru DTA</div>
+<div style="font-size:12px;opacity:.8">DTA Miftahul Falah</div>
+</div>
+<button class="active" onclick="showPage('dashboard')">📊 Dashboard</button>
+<button onclick="showPage('siswa')">👨‍🎓 Data Siswa</button>
+<button onclick="showPage('nilai1')">📝 Nilai Sem 1</button>
+<button onclick="showPage('nilai2')">📝 Nilai Sem 2</button>
+<button onclick="showPage('raport')">🏆 Raport + Ranking</button>
+<button onclick="showPage('profil')">👤 Profil Guru</button>
+</aside>
+<main class="main">
+<section id="dashboard" class="page active">
+<h1 id="judulSekolah">DTA MIFTAHUL FALAH</h1>
+<p>Panel Guru - Sistem Nilai Awal Tengah Akhir + Ranking Otomatis</p>
+<div style="display:flex;gap:15px;margin-top:15px;align-items:center" class="card">
+<img id="dashFoto" src="https://ui-avatars.com/api/?name=Guru+DTA&background=1b8a5a&color=fff" style="width:70px;height:70px;border-radius:50%">
+<div><h3 id="dashNama" style="margin:0">Guru DTA</h3><p id="dashMapel" style="margin:0;opacity:.7">Kelas DTA</p></div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:15px"><div class="card"><h2 id="jmlSiswa">0</h2><p>Total Siswa</p></div><div class="card"><h2 id="jmlNilai">0</h2><p>Sudah Dinilai</p></div><div class="card" style="background:var(--hijau);color:#fff"><h2>Ranking Auto</h2><p>1,2,3...</p></div></div>
+</section>
 
-  <main class="main">
-    <section id="dashboard" class="page active">
-      <h1>Assalamualaikum, <span id="namaGuruDisplay">Ustadz/ah</span>!</h1>
-      <p>Panel Guru DTA Miftahul Falah - Semua Nilai Otomatis</p>
-      <div class="cards">
-        <div class="card"><h2 id="jmlSiswa">0</h2><p>Total Siswa</p></div>
-        <div class="card"><h2 id="jmlLulus">0</h2><p>Sudah Dinilai</p></div>
-        <div class="card green"><h2>Siap Cetak</h2><p>Raport Auto Rata-rata</p></div>
-      </div>
-      <div style="margin-top:20px;background:white;padding:20px;border-radius:12px">
-        <h3>Cetak Cepat</h3>
-        <button onclick="showPage('raport')">🖨️ Cetak Rekap Raport Sekarang</button>
-      </div>
-    </section>
+<section id="siswa" class="page"><h1>Data Siswa</h1><div class="no-print" style="display:flex;gap:8px;margin:10px 0"><input id="namaSiswa" placeholder="Nama"><input id="nisSiswa" placeholder="NIS"><button class="btn" onclick="tambahSiswa()">+ Tambah</button></div><table><thead><tr><th>NIS</th><th>Nama</th><th>Aksi</th></tr></thead><tbody id="tbodySiswa"></tbody></table></section>
+<section id="nilai1" class="page"><h1>Nilai Semester 1 (Awal, Tengah, Akhir)</h1><div id="wrapNilai1"></div></section>
+<section id="nilai2" class="page"><h1>Nilai Semester 2 (Awal, Tengah, Akhir)</h1><div id="wrapNilai2"></div></section>
+<section id="raport" class="page"><div class="no-print" style="display:flex;justify-content:space-between;align-items:center"><h1>Rekap Raport + Ranking</h1><button class="btn" onclick="window.print()" style="background:#0d2e1f">🖨️ Cetak</button></div><div id="printArea"><div class="kop"><h2>DTA MIFTAHUL FALAH</h2><p>Rekap Raport Gabungan Sem 1 & 2 + Ranking</p><p>Guru: <span id="kopGuru"></span></p></div><table><thead><tr><th>Rank</th><th>Nama</th><th>NIS</th><th>Sem1</th><th>Sem2</th><th>Raport</th><th>Predikat</th></tr></thead><tbody id="tbodyRaport"></tbody></table></div></section>
 
-    <section id="siswa" class="page">
-      <h1>Data Siswa</h1>
-      <div class="form-inline no-print">
-        <input id="namaSiswa" placeholder="Nama Lengkap Siswa">
-        <input id="nisSiswa" placeholder="NIS">
-        <button onclick="tambahSiswa()">+ Tambah</button>
-      </div>
-      <table><thead><tr><th>NIS</th><th>Nama</th><th class="no-print">Aksi</th></tr></thead><tbody id="tbodySiswa"></tbody></table>
-    </section>
-
-    <section id="nilai1" class="page">
-      <h1>Nilai Semester 1</h1>
-      <p class="no-print">Input: Al-Quran, Akhlak, Fiqih, B.Arab, Tahfidz. Rata-rata otomatis.</p>
-      <table><thead><tr><th>Nama</th><th>Quran</th><th>Akhlak</th><th>Fiqih</th><th>B.Arab</th><th>Tahfidz</th><th>Rata2</th></tr></thead><tbody id="tbodyNilai1"></tbody></table>
-    </section>
-
-    <section id="nilai2" class="page">
-      <h1>Nilai Semester 2</h1>
-      <table><thead><tr><th>Nama</th><th>Quran</th><th>Akhlak</th><th>Fiqih</th><th>B.Arab</th><th>Tahfidz</th><th>Rata2</th></tr></thead><tbody id="tbodyNilai2"></tbody></table>
-    </section>
-
-    <section id="raport" class="page">
-      <div class="no-print" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
-        <h1>Rekap Raport Akhir (Gabungan Sem 1 & 2)</h1>
-        <button class="btn-cetak" onclick="window.print()">🖨️ Cetak / Simpan PDF</button>
-      </div>
-      <div id="printArea">
-        <div class="kop"><h2>DTA MIFTAHUL FALAH</h2><p>Rekap Nilai Raport Santri - Tahun Ajaran 2025/2026</p><p>Guru Pengampu: <span id="kopNamaGuru"></span> | <span id="kopMapel"></span></p></div>
-        <table><thead><tr><th>No</th><th>Nama</th><th>NIS</th><th>Rata2 Sem1</th><th>Rata2 Sem2</th><th>Rata2 Raport</th><th>Predikat</th></tr></thead><tbody id="tbodyRaport"></tbody></table>
-        <p style="margin-top:20px;text-align:right">Mengetahui,<br><br><br><span id="ttdNama">Guru DTA</span></p>
-      </div>
-    </section>
-
-    <section id="profil" class="page">
-      <h1>Profil Guru (Saya)</h1>
-      <div class="profil-card">
-        <input id="pNama" placeholder="Nama Lengkap">
-        <input id="pNip" placeholder="NIP / NUPTK">
-        <input id="pMapel" placeholder="Kelas Diampu (Contoh: Kelas 2 Ibtidaiyah)">
-        <input id="pHp" placeholder="No HP / WA">
-        <button onclick="simpanProfil()">Simpan Profil</button>
-      </div>
-    </section>
-  </main>
+<section id="profil" class="page">
+<h1>Profil Guru - Dengan Foto</h1>
+<div class="card" style="max-width:420px;display:flex;flex-direction:column;gap:10px">
+<img id="previewFoto" class="profil-foto-preview" src="https://ui-avatars.com/api/?name=Guru+DTA&background=1b8a5a&color=fff">
+<input type="file" id="inputFoto" accept="image/*" onchange="uploadFoto(event)">
+<input id="pNama" placeholder="Nama Guru Lengkap">
+<input id="pNip" placeholder="NIP / NUPTK">
+<input id="pMapel" placeholder="Kelas Diampu">
+<input id="pSekolah" placeholder="Nama Sekolah (contoh: DTA Miftahul Falah)">
+<button class="btn" onclick="simpanProfil()">Simpan Profil + Foto</button>
+<p style="font-size:12px;opacity:.6">Foto otomatis kesimpan, nanti muncul di Dashboard & Sidebar</p>
+</div>
+</section>
+</main>
 </div>
 
 <script>
-let siswa = JSON.parse(localStorage.getItem('siswa_dta') || '[]');
-let nilai1 = JSON.parse(localStorage.getItem('nilai1_dta') || '{}');
-let nilai2 = JSON.parse(localStorage.getItem('nilai2_dta') || '{}');
-let profil = JSON.parse(localStorage.getItem('profil_dta') || '{"nama":"Ustadz/ah DTA","nip":"-","mapel":"DTA Miftahul Falah","hp":""}');
+const MAPEL = ['Quran','Akhlak','Fiqih','B.Arab','Tahfidz'];
+let siswa = JSON.parse(localStorage.getItem('siswa')||'[]');
+let n1 = JSON.parse(localStorage.getItem('n1')||'{}');
+let n2 = JSON.parse(localStorage.getItem('n2')||'{}');
+let profil = JSON.parse(localStorage.getItem('profil')||'{"nama":"Guru DTA","nip":"-","mapel":"Kelas DTA","sekolah":"DTA MIFTAHUL FALAH","foto":""}');
 
-function saveAll(){
-  localStorage.setItem('siswa_dta', JSON.stringify(siswa));
-  localStorage.setItem('nilai1_dta', JSON.stringify(nilai1));
-  localStorage.setItem('nilai2_dta', JSON.stringify(nilai2));
-  localStorage.setItem('profil_dta', JSON.stringify(profil));
+function save(){localStorage.setItem('siswa',JSON.stringify(siswa));localStorage.setItem('n1',JSON.stringify(n1));localStorage.setItem('n2',JSON.stringify(n2));localStorage.setItem('profil',JSON.stringify(profil));}
+function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active');render();}
+function tambahSiswa(){const nm=document.getElementById('namaSiswa').value.trim();const nis=document.getElementById('nisSiswa').value.trim();if(!nm||!nis) return alert('Lengkapi');siswa.push({nis,nama:nm});save();render();}
+function hapusSiswa(nis){if(confirm('Hapus?')){siswa=siswa.filter(s=>s.nis!=nis);delete n1[nis];delete n2[nis];save();render();}}
+function uploadFoto(e){
+ const file=e.target.files[0]; if(!file) return;
+ const reader=new FileReader();
+ reader.onload=function(ev){ profil.foto=ev.target.result; document.getElementById('previewFoto').src=profil.foto; save(); render(); }
+ reader.readAsDataURL(file);
 }
-function showPage(id){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  document.querySelectorAll('.sidebar button').forEach(b=>b.classList.remove('active'));
-  const btn = [...document.querySelectorAll('.sidebar button')].find(b=>b.getAttribute('onclick').includes(id));
-  if(btn) btn.classList.add('active');
-  renderAll();
+function update(sem,nis,mapel,jenis,val){let t=sem==1?n1:n2;if(!t[nis]) t[nis]={};if(!t[nis][mapel]) t[nis][mapel]={a:0,t:0,ak:0};t[nis][mapel][jenis]=Number(val)||0;save();render();}
+function rataMapel(o){if(!o) return 0; const v=[o.a||0,o.t||0,o.ak||0].filter(x=>x>0); return v.length?v.reduce((a,b)=>a+b,0)/v.length:0;}
+function rataSem(d){if(!d) return 0; let tot=0,c=0; MAPEL.forEach(m=>{const r=rataMapel(d[m]); if(r>0){tot+=r;c++;}}); return c?tot/c:0;}
+function predikat(n){if(n>=90) return 'Mumtaz'; if(n>=80) return 'Jayyid Jiddan'; if(n>=70) return 'Jayyid'; return 'Maqbul';}
+function renderNilai(sem){
+ const wrap=document.getElementById(sem==1?'wrapNilai1':'wrapNilai2'); const data=sem==1?n1:n2; let html='';
+ siswa.forEach(s=>{
+   html+=`<div class="card" style="margin-bottom:12px"><b>${s.nama}</b><table><thead><tr><th>Mapel</th><th>Awal</th><th>Tengah</th><th>Akhir</th><th>Rata</th></tr></thead><tbody>`;
+   MAPEL.forEach(m=>{
+     const d=(data[s.nis]&&data[s.nis][m])||{a:'',t:'',ak:''};
+     html+=`<tr><td>${m}</td><td><input value="${d.a||''}" onchange="update(${sem},'${s.nis}','${m}','a',this.value)"></td><td><input value="${d.t||''}" onchange="update(${sem},'${s.nis}','${m}','t',this.value)"></td><td><input value="${d.ak||''}" onchange="update(${sem},'${s.nis}','${m}','ak',this.value)"></td><td><b>${rataMapel(d).toFixed(1)}</b></td></tr>`;
+   });
+   html+=`<tr style="background:#e8f5e9"><td colspan=4><b>RATA SEM ${sem}</b></td><td><b>${rataSem(data[s.nis]).toFixed(1)}</b></td></tr></tbody></table></div>`;
+ });
+ wrap.innerHTML=html||'Belum ada siswa';
 }
-function tambahSiswa(){
-  const nama=document.getElementById('namaSiswa').value.trim();
-  const nis=document.getElementById('nisSiswa').value.trim();
-  if(!nama||!nis) return alert('Isi Nama dan NIS!');
-  if(siswa.find(s=>s.nis===nis)) return alert('NIS sudah ada!');
-  siswa.push({nis,nama});
-  document.getElementById('namaSiswa').value='';document.getElementById('nisSiswa').value='';
-  saveAll(); renderAll();
+function render(){
+ const foto = profil.foto || `https://ui-avatars.com/api/?name=${encodeURIComponent(profil.nama)}&background=1b8a5a&color=fff`;
+ document.getElementById('sideFoto').src=foto; document.getElementById('dashFoto').src=foto; document.getElementById('previewFoto').src=foto;
+ document.getElementById('sideNama').innerText=profil.nama; document.getElementById('dashNama').innerText=profil.nama;
+ document.getElementById('dashMapel').innerText=profil.mapel; document.getElementById('judulSekolah').innerText=profil.sekolah||'DTA MIFTAHUL FALAH';
+ document.getElementById('kopGuru').innerText=profil.nama; document.getElementById('jmlSiswa').innerText=siswa.length;
+ document.getElementById('tbodySiswa').innerHTML=siswa.map(s=>`<tr><td>${s.nis}</td><td>${s.nama}</td><td><button onclick="hapusSiswa('${s.nis}')">Hapus</button></td></tr>`).join('');
+ document.getElementById('pNama').value=profil.nama; document.getElementById('pNip').value=profil.nip||''; document.getElementById('pMapel').value=profil.mapel||''; document.getElementById('pSekolah').value=profil.sekolah||'DTA MIFTAHUL FALAH';
+ renderNilai(1); renderNilai(2);
+ let list=siswa.map(s=>{const r1=rataSem(n1[s.nis]);const r2=rataSem(n2[s.nis]);const akhir=(r1&&r2)?(r1+r2)/2:(r1||r2||0);return{...s,r1,r2,akhir};}).sort((a,b)=>b.akhir-a.akhir);
+ document.getElementById('tbodyRaport').innerHTML=list.map((s,i)=>{const rank=i+1;let cls=rank==1?'rank-1':rank==2?'rank-2':rank==3?'rank-3':'';return `<tr class="${cls}"><td>${rank}</td><td>${s.nama}</td><td>${s.nis}</td><td>${s.r1.toFixed(1)}</td><td>${s.r2.toFixed(1)}</td><td><b>${s.akhir.toFixed(1)}</b></td><td>${predikat(s.akhir)}</td></tr>`;}).join('');
 }
-function hapusSiswa(nis){ if(confirm('Hapus siswa ini?')){siswa=siswa.filter(s=>s.nis!==nis); delete nilai1[nis]; delete nilai2[nis]; saveAll(); renderAll();}}
-function updateNilai(sem,nis,mapel,val){
-  let target=sem==1?nilai1:nilai2;
-  if(!target[nis]) target[nis]={};
-  target[nis][mapel]=Number(val)||0;
-  saveAll(); renderAll();
-}
-function rataRata(obj){
-  if(!obj) return 0;
-  const v=Object.values(obj).filter(x=>x>0); if(v.length==0) return 0;
-  return (v.reduce((a,b)=>a+b,0)/v.length).toFixed(1);
-}
-function predikat(n){
-  n=Number(n); if(n>=90) return 'Mumtaz'; if(n>=80) return 'Jayyid Jiddan'; if(n>=70) return 'Jayyid'; if(n>=50) return 'Maqbul'; return 'Belum Tuntas';
-}
-function renderAll(){
-  document.getElementById('namaGuruDisplay').innerText=profil.nama;
-  document.getElementById('kopNamaGuru').innerText=profil.nama;
-  document.getElementById('kopMapel').innerText=profil.mapel;
-  document.getElementById('ttdNama').innerText=profil.nama;
-  document.getElementById('jmlSiswa').innerText=siswa.length;
-  document.getElementById('jmlLulus').innerText=Object.keys(nilai1).length;
-  document.getElementById('tbodySiswa').innerHTML=siswa.map(s=>`<tr><td>${s.nis}</td><td>${s.nama}</td><td class="no-print"><button onclick="hapusSiswa('${s.nis}')">Hapus</button></td></tr>`).join('') || '<tr><td colspan=3>Belum ada siswa</td></tr>';
-  document.getElementById('tbodyNilai1').innerHTML=siswa.map(s=>{
-    const n=nilai1[s.nis]||{};
-    return `<tr><td>${s.nama}</td>${['quran','akhlak','fiqih','arab','tahfidz'].map(m=>`<td><input type="number" min="0" max="100" value="${n[m]||''}" onchange="updateNilai(1,'${s.nis}','${m}',this.value)"></td>`).join('')}<td><b>${rataRata(n)}</b></td></tr>`;
-  }).join('') || '<tr><td colspan=7>Tambah siswa dulu</td></tr>';
-  document.getElementById('tbodyNilai2').innerHTML=siswa.map(s=>{
-    const n=nilai2[s.nis]||{};
-    return `<tr><td>${s.nama}</td>${['quran','akhlak','fiqih','arab','tahfidz'].map(m=>`<td><input type="number" min="0" max="100" value="${n[m]||''}" onchange="updateNilai(2,'${s.nis}','${m}',this.value)"></td>`).join('')}<td><b>${rataRata(n)}</b></td></tr>`;
-  }).join('');
-  document.getElementById('tbodyRaport').innerHTML=siswa.map((s,i)=>{
-    const r1=Number(rataRata(nilai1[s.nis])); const r2=Number(rataRata(nilai2[s.nis]));
-    const akhir=((r1+r2)/2||r1||r2||0).toFixed(1);
-    return `<tr><td>${i+1}</td><td>${s.nama}</td><td>${s.nis}</td><td>${r1||0}</td><td>${r2||0}</td><td><b>${akhir}</b></td><td>${predikat(akhir)}</td></tr>`;
-  }).join('');
-  document.getElementById('pNama').value=profil.nama; document.getElementById('pNip').value=profil.nip; document.getElementById('pMapel').value=profil.mapel; document.getElementById('pHp').value=profil.hp;
-}
-function simpanProfil(){
-  profil={nama:document.getElementById('pNama').value||'Guru DTA', nip:document.getElementById('pNip').value, mapel:document.getElementById('pMapel').value, hp:document.getElementById('pHp').value};
-  saveAll(); renderAll(); alert('Profil berhasil disimpan!');
-}
-renderAll();
+function simpanProfil(){profil.nama=document.getElementById('pNama').value||'Guru DTA';profil.nip=document.getElementById('pNip').value;profil.mapel=document.getElementById('pMapel').value;profil.sekolah=document.getElementById('pSekolah').value||'DTA MIFTAHUL FALAH';save();render();alert('Profil + Foto Tersimpan!');}
+render();
 </script>
 </body>
 </html>
