@@ -1,387 +1,187 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistem Informasi Akademik Madrasah DTA</title>
-    <!-- Tailwind CSS untuk Desain Modern -->
-    <script src="https://cdn.tailwindcss.com"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DTA Miftahul Falah - Panel Guru</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--hijau:#1b8a5a;--hijau-muda:#e8f5e9;--hijau-tua:#146a45}
+*{font-family:'Poppins',sans-serif;box-sizing:border-box}
+body{margin:0;background:#f4f8f5}
+.app{display:flex;min-height:100vh}
+.sidebar{width:250px;background:var(--hijau);color:white;padding:20px;display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
+.brand{display:flex;gap:10px;align-items:center;margin-bottom:30px;font-size:18px}
+.sidebar button{width:100%;padding:12px;text-align:left;background:transparent;border:0;color:white;border-radius:8px;cursor:pointer;margin-bottom:5px;font-size:14px}
+.sidebar button.active,.sidebar button:hover{background:var(--hijau-tua)}
+.main{flex:1;padding:30px;overflow:auto}
+.page{display:none}.page.active{display:block}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-top:15px}
+.card{background:white;padding:20px;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,.05)}
+.card.green{background:var(--hijau);color:white}
+.form-inline{display:flex;gap:10px;margin:15px 0;flex-wrap:wrap}
+input{padding:10px;border-radius:8px;border:1px solid #ccc;flex:1;min-width:120px}
+button{padding:10px 15px;border-radius:8px;border:0;background:var(--hijau);color:white;cursor:pointer;font-weight:600}
+table{width:100%;background:white;border-radius:12px;overflow:hidden;border-collapse:collapse;margin-top:10px}
+th{background:var(--hijau-muda);text-align:left;padding:12px;font-size:13px}
+td{padding:10px;border-top:1px solid #eee;font-size:14px}
+td input{width:65px;text-align:center}
+.btn-cetak{background:#0d2e1f}
+.profil-card{background:white;padding:20px;border-radius:12px;display:flex;flex-direction:column;gap:12px;max-width:400px}
+.kop{text-align:center;margin-bottom:20px;border-bottom:3px solid var(--hijau);padding-bottom:15px}
+.footer-sidebar{margin-top:auto;font-size:12px;opacity:.8}
+@media print{.no-print,.sidebar{display:none!important}.main{padding:0} table{box-shadow:none}}
+@media(max-width:768px){.app{flex-direction:column}.sidebar{width:100%;height:auto;position:relative}.cards{grid-template-columns:1fr}}
+</style>
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col">
+<body>
+<div class="app">
+  <aside class="sidebar no-print">
+    <div class="brand">🌿 <b>DTA Miftahul Falah</b></div>
+    <nav>
+      <button class="active" onclick="showPage('dashboard')">📊 Dashboard</button>
+      <button onclick="showPage('siswa')">👨‍🎓 Data Siswa</button>
+      <button onclick="showPage('nilai1')">📝 Nilai Sem. 1</button>
+      <button onclick="showPage('nilai2')">📝 Nilai Sem. 2</button>
+      <button onclick="showPage('raport')">📑 Rekap Raport</button>
+      <button onclick="showPage('profil')">👤 Profil Guru</button>
+    </nav>
+    <div class="footer-sidebar">© 2026 DTA Miftahul Falah - Siap Upload Github</div>
+  </aside>
 
-    <!-- Header / Navbar -->
-    <header class="bg-emerald-700 text-white shadow-md">
-        <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center">
-            <h1 class="text-xl font-bold tracking-wide">📚 Rekap Akademik DTA</h1>
-            <nav class="flex flex-wrap gap-2 mt-2 md:mt-0">
-                <button onclick="switchTab('siswa')" class="tab-btn px-3 py-1.5 rounded bg-emerald-800 text-sm font-medium hover:bg-emerald-600 transition">Data Siswa</button>
-                <button onclick="switchTab('absensi')" class="tab-btn px-3 py-1.5 rounded bg-emerald-800 text-sm font-medium hover:bg-emerald-600 transition">Absensi</button>
-                <button onclick="switchTab('nilai')" class="tab-btn px-3 py-1.5 rounded bg-emerald-800 text-sm font-medium hover:bg-emerald-600 transition">Nilai Raport</button>
-                <button onclick="switchTab('laporan')" class="tab-btn px-3 py-1.5 rounded bg-emerald-800 text-sm font-medium hover:bg-emerald-600 transition">Laporan Rekap</button>
-            </nav>
-        </div>
-    </header>
+  <main class="main">
+    <section id="dashboard" class="page active">
+      <h1>Assalamualaikum, <span id="namaGuruDisplay">Ustadz/ah</span>!</h1>
+      <p>Panel Guru DTA Miftahul Falah - Semua Nilai Otomatis</p>
+      <div class="cards">
+        <div class="card"><h2 id="jmlSiswa">0</h2><p>Total Siswa</p></div>
+        <div class="card"><h2 id="jmlLulus">0</h2><p>Sudah Dinilai</p></div>
+        <div class="card green"><h2>Siap Cetak</h2><p>Raport Auto Rata-rata</p></div>
+      </div>
+      <div style="margin-top:20px;background:white;padding:20px;border-radius:12px">
+        <h3>Cetak Cepat</h3>
+        <button onclick="showPage('raport')">🖨️ Cetak Rekap Raport Sekarang</button>
+      </div>
+    </section>
 
-    <!-- Main Container -->
-    <main class="max-w-7xl mx-auto px-4 py-6 flex-grow w-full">
+    <section id="siswa" class="page">
+      <h1>Data Siswa</h1>
+      <div class="form-inline no-print">
+        <input id="namaSiswa" placeholder="Nama Lengkap Siswa">
+        <input id="nisSiswa" placeholder="NIS">
+        <button onclick="tambahSiswa()">+ Tambah</button>
+      </div>
+      <table><thead><tr><th>NIS</th><th>Nama</th><th class="no-print">Aksi</th></tr></thead><tbody id="tbodySiswa"></tbody></table>
+    </section>
 
-        <!-- TAB 1: DATA SISWA -->
-        <section id="tab-siswa" class="tab-content space-y-6">
-            <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
-                <h2 class="text-lg font-semibold text-emerald-700 mb-4">Tambah Siswa Baru</h2>
-                <form id="formSiswa" class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-slate-600 mb-1">Nomor Induk (NIS)</label>
-                        <input type="text" id="nis" required class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-slate-600 mb-1">Nama Lengkap Siswa</label>
-                        <input type="text" id="namaSiswa" required class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-slate-600 mb-1">Kelas DTA</label>
-                        <select id="kelasSiswa" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
-                            <option value="1 DTA">1 DTA (Awaliyah)</option>
-                            <option value="2 DTA">2 DTA (Awaliyah)</option>
-                            <option value="3 DTA">3 DTA (Awaliyah)</option>
-                            <option value="4 DTA">4 DTA (Awaliyah)</option>
-                        </select>
-                    </div>
-                    <div class="md:col-span-3">
-                        <button type="submit" class="bg-emerald-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-emerald-700 transition">Simpan Siswa</button>
-                    </div>
-                </form>
-            </div>
+    <section id="nilai1" class="page">
+      <h1>Nilai Semester 1</h1>
+      <p class="no-print">Input: Al-Quran, Akhlak, Fiqih, B.Arab, Tahfidz. Rata-rata otomatis.</p>
+      <table><thead><tr><th>Nama</th><th>Quran</th><th>Akhlak</th><th>Fiqih</th><th>B.Arab</th><th>Tahfidz</th><th>Rata2</th></tr></thead><tbody id="tbodyNilai1"></tbody></table>
+    </section>
 
-            <!-- Tabel Daftar Siswa -->
-            <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 overflow-x-auto">
-                <h2 class="text-lg font-semibold text-emerald-700 mb-4">Daftar Siswa Terdaftar</h2>
-                <table class="w-full text-left border-collapse">
-                    <thead>
-                        <tr class="border-b border-slate-200 text-slate-500 text-sm">
-                            <th class="py-2 px-3">No</th>
-                            <th class="py-2 px-3">NIS</th>
-                            <th class="py-2 px-3">Nama Siswa</th>
-                            <th class="py-2 px-3">Kelas</th>
-                            <th class="py-2 px-3">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tabelSiswaBody" class="text-sm divide-y divide-slate-100">
-                        <!-- Data masuk otomatis lewat JS -->
-                    </tbody>
-                </table>
-            </div>
-        </section>
+    <section id="nilai2" class="page">
+      <h1>Nilai Semester 2</h1>
+      <table><thead><tr><th>Nama</th><th>Quran</th><th>Akhlak</th><th>Fiqih</th><th>B.Arab</th><th>Tahfidz</th><th>Rata2</th></tr></thead><tbody id="tbodyNilai2"></tbody></table>
+    </section>
 
-        <!-- TAB 2: ABSENSI HARIAN -->
-        <section id="tab-absensi" class="tab-content hidden space-y-6">
-            <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
-                <h2 class="text-lg font-semibold text-emerald-700 mb-4">Input Absensi Harian</h2>
-                <form id="formAbsensi" class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-slate-600 mb-1">Tanggal</label>
-                        <input type="date" id="tglAbsen" required class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-slate-600 mb-1">Pilih Siswa</label>
-                        <select id="absenSiswaId" required class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
-                            <!-- Diisi via JS -->
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-slate-600 mb-1">Keterangan</label>
-                        <select id="statusAbsen" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
-                            <option value="Hadir">Hadir</option>
-                            <option value="Sakit">Sakit</option>
-                            <option value="Izin">Izin</option>
-                            <option value="Alpa">Alpa</option>
-                        </select>
-                    </div>
-                    <div class="flex items-end">
-                        <button type="submit" class="w-full bg-emerald-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-emerald-700 transition">Catat Absen</button>
-                    </div>
-                </form>
-            </div>
+    <section id="raport" class="page">
+      <div class="no-print" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+        <h1>Rekap Raport Akhir (Gabungan Sem 1 & 2)</h1>
+        <button class="btn-cetak" onclick="window.print()">🖨️ Cetak / Simpan PDF</button>
+      </div>
+      <div id="printArea">
+        <div class="kop"><h2>DTA MIFTAHUL FALAH</h2><p>Rekap Nilai Raport Santri - Tahun Ajaran 2025/2026</p><p>Guru Pengampu: <span id="kopNamaGuru"></span> | <span id="kopMapel"></span></p></div>
+        <table><thead><tr><th>No</th><th>Nama</th><th>NIS</th><th>Rata2 Sem1</th><th>Rata2 Sem2</th><th>Rata2 Raport</th><th>Predikat</th></tr></thead><tbody id="tbodyRaport"></tbody></table>
+        <p style="margin-top:20px;text-align:right">Mengetahui,<br><br><br><span id="ttdNama">Guru DTA</span></p>
+      </div>
+    </section>
 
-            <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 overflow-x-auto">
-                <h2 class="text-lg font-semibold text-emerald-700 mb-4">Riwayat Absensi</h2>
-                <table class="w-full text-left border-collapse">
-                    <thead>
-                        <tr class="border-b border-slate-200 text-slate-500 text-sm">
-                            <th class="py-2 px-3">Tanggal</th>
-                            <th class="py-2 px-3">Nama Siswa</th>
-                            <th class="py-2 px-3">Status</th>
-                            <th class="py-2 px-3">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tabelAbsenBody" class="text-sm divide-y divide-slate-100"></tbody>
-                </table>
-            </div>
-        </section>
+    <section id="profil" class="page">
+      <h1>Profil Guru (Saya)</h1>
+      <div class="profil-card">
+        <input id="pNama" placeholder="Nama Lengkap">
+        <input id="pNip" placeholder="NIP / NUPTK">
+        <input id="pMapel" placeholder="Kelas Diampu (Contoh: Kelas 2 Ibtidaiyah)">
+        <input id="pHp" placeholder="No HP / WA">
+        <button onclick="simpanProfil()">Simpan Profil</button>
+      </div>
+    </section>
+  </main>
+</div>
 
-        <!-- TAB 3: NILAI RAPORT & UJIAN -->
-        <section id="tab-nilai" class="tab-content hidden space-y-6">
-            <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
-                <h2 class="text-lg font-semibold text-emerald-700 mb-4">Input Nilai Ujian & Raport</h2>
-                <form id="formNilai" class="grid grid-cols-1 md:grid-cols-6 gap-4">
-                    <div class="md:col-span-2">
-                        <label class="block text-sm font-medium text-slate-600 mb-1">Pilih Siswa</label>
-                        <select id="nilaiSiswaId" required class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 outline-none"></select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-slate-600 mb-1">Mata Pelajaran</label>
-                        <select id="mapel" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
-                            <option value="Al-Qur'an Hadits">Al-Qur'an Hadits</option>
-                            <option value="Aqidah Akhlak">Aqidah Akhlak</option>
-                            <option value="Fiqih">Fiqih</option>
-                            <option value="Sejarah Islam">Sejarah Islam</option>
-                            <option value="Bahasa Arab">Bahasa Arab</option>
-                            <option value="Praktik Ibadah">Praktik Ibadah</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-slate-600 mb-1">Nilai Tugas</label>
-                        <input type="number" id="tugas" min="0" max="100" required class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-slate-600 mb-1">Nilai Ujian</label>
-                        <input type="number" id="ujian" min="0" max="100" required class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
-                    </div>
-                    <div class="flex items-end">
-                        <button type="submit" class="w-full bg-emerald-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-emerald-700 transition">Simpan Nilai</button>
-                    </div>
-                </form>
-            </div>
+<script>
+let siswa = JSON.parse(localStorage.getItem('siswa_dta') || '[]');
+let nilai1 = JSON.parse(localStorage.getItem('nilai1_dta') || '{}');
+let nilai2 = JSON.parse(localStorage.getItem('nilai2_dta') || '{}');
+let profil = JSON.parse(localStorage.getItem('profil_dta') || '{"nama":"Ustadz/ah DTA","nip":"-","mapel":"DTA Miftahul Falah","hp":""}');
 
-            <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 overflow-x-auto">
-                <h2 class="text-lg font-semibold text-emerald-700 mb-4">Daftar Nilai Masuk</h2>
-                <table class="w-full text-left border-collapse">
-                    <thead>
-                        <tr class="border-b border-slate-200 text-slate-500 text-sm">
-                            <th class="py-2 px-3">Nama Siswa</th>
-                            <th class="py-2 px-3">Mata Pelajaran</th>
-                            <th class="py-2 px-3">Tugas</th>
-                            <th class="py-2 px-3">Ujian</th>
-                            <th class="py-2 px-3">Nilai Akhir</th>
-                            <th class="py-2 px-3">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tabelNilaiBody" class="text-sm divide-y divide-slate-100"></tbody>
-                </table>
-            </div>
-        </section>
-
-        <!-- TAB 4: LAPORAN REKAP -->
-        <section id="tab-laporan" class="tab-content hidden space-y-6">
-            <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-lg font-semibold text-emerald-700">Laporan Rekapitulasi Keseluruhan</h2>
-                    <button onclick="window.print()" class="bg-slate-700 text-white px-3 py-1.5 rounded-lg text-sm hover:bg-slate-800 transition">Cetak / Simpan PDF</button>
-                </div>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse border border-slate-200">
-                        <thead>
-                            <tr class="bg-slate-100 text-slate-600 text-sm">
-                                <th class="border border-slate-200 py-2 px-3">NIS</th>
-                                <th class="border border-slate-200 py-2 px-3">Nama Siswa</th>
-                                <th class="border border-slate-200 py-2 px-3">Kelas</th>
-                                <th class="border border-slate-200 py-2 px-3">Hadir</th>
-                                <th class="border border-slate-200 py-2 px-3">Sakit</th>
-                                <th class="border border-slate-200 py-2 px-3">Izin</th>
-                                <th class="border border-slate-200 py-2 px-3">Alpa</th>
-                                <th class="border border-slate-200 py-2 px-3">Rata-rata Nilai</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tabelLaporanBody" class="text-sm"></tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- Footer -->
-    <footer class="bg-white border-t border-slate-200 py-4 text-center text-xs text-slate-500 mt-auto">
-        Aplikasi Rekap Madrasah DTA &copy; 2026
-    </footer>
-
-    <!-- JavaScript Aplikasi -->
-    <script>
-        // Database LocalStorage
-        let siswaList = JSON.parse(localStorage.getItem('dta_siswa')) || [];
-        let absenList = JSON.parse(localStorage.getItem('dta_absen')) || [];
-        let nilaiList = JSON.parse(localStorage.getItem('dta_nilai')) || [];
-
-        function saveData() {
-            localStorage.setItem('dta_siswa', JSON.stringify(siswaList));
-            localStorage.setItem('dta_absen', JSON.stringify(absenList));
-            localStorage.setItem('dta_nilai', JSON.stringify(nilaiList));
-            renderAll();
-        }
-
-        // Tab Switcher
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-            document.getElementById('tab-' + tabId).classList.remove('hidden');
-        }
-
-        // Form Submit Siswa
-        document.getElementById('formSiswa').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const nis = document.getElementById('nis').value;
-            const nama = document.getElementById('namaSiswa').value;
-            const kelas = document.getElementById('kelasSiswa').value;
-
-            siswaList.push({ id: Date.now(), nis, nama, kelas });
-            document.getElementById('formSiswa').reset();
-            saveData();
-        });
-
-        // Form Submit Absen
-        document.getElementById('formAbsensi').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const tanggal = document.getElementById('tglAbsen').value;
-            const siswaId = document.getElementById('absenSiswaId').value;
-            const status = document.getElementById('statusAbsen').value;
-
-            absenList.push({ id: Date.now(), tanggal, siswaId, status });
-            saveData();
-            alert('Absensi berhasil dicatat!');
-        });
-
-        // Form Submit Nilai
-        document.getElementById('formNilai').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const siswaId = document.getElementById('nilaiSiswaId').value;
-            const mapel = document.getElementById('mapel').value;
-            const tugas = parseFloat(document.getElementById('tugas').value);
-            const ujian = parseFloat(document.getElementById('ujian').value);
-            const akhir = ((tugas * 0.4) + (ujian * 0.6)).toFixed(2);
-
-            nilaiList.push({ id: Date.now(), siswaId, mapel, tugas, ujian, akhir });
-            saveData();
-            alert('Nilai berhasil disimpan!');
-        });
-
-        // Hapus Data
-        function hapusSiswa(id) {
-            siswaList = siswaList.filter(s => s.id !== id);
-            saveData();
-        }
-        function hapusAbsen(id) {
-            absenList = absenList.filter(a => a.id !== id);
-            saveData();
-        }
-        function hapusNilai(id) {
-            nilaiList = nilaiList.filter(n => n.id !== id);
-            saveData();
-        }
-
-        // Render Semua Tabel & Dropdown
-        function renderAll() {
-            // Render Dropdown Siswa
-            const selectSiswaAbsen = document.getElementById('absenSiswaId');
-            const selectSiswaNilai = document.getElementById('nilaiSiswaId');
-            selectSiswaAbsen.innerHTML = '';
-            selectSiswaNilai.innerHTML = '';
-
-            let htmlSiswa = '';
-            siswaList.forEach((s, index) => {
-                htmlSiswa += `
-                    <tr class="border-b border-slate-100">
-                        <td class="py-2 px-3">${index + 1}</td>
-                        <td class="py-2 px-3">${s.nis}</td>
-                        <td class="py-2 px-3 font-medium">${s.nama}</td>
-                        <td class="py-2 px-3">${s.kelas}</td>
-                        <td class="py-2 px-3">
-                            <button onclick="hapusSiswa(${s.id})" class="text-red-500 hover:text-red-700 text-xs font-semibold">Hapus</button>
-                        </td>
-                    </tr>
-                `;
-
-                const opt = `<option value="${s.id}">${s.nama} (${s.kelas})</option>`;
-                selectSiswaAbsen.innerHTML += opt;
-                selectSiswaNilai.innerHTML += opt;
-            });
-            document.getElementById('tabelSiswaBody').innerHTML = htmlSiswa || `<tr><td colspan="5" class="py-4 text-center text-slate-400">Belum ada data siswa.</td></tr>`;
-
-            // Render Absen
-            let htmlAbsen = '';
-            absenList.forEach(a => {
-                const siswa = siswaList.find(s => s.id == a.siswaId);
-                const namaSiswa = siswa ? siswa.nama : 'Siswa Dihapus';
-                htmlAbsen += `
-                    <tr class="border-b border-slate-100">
-                        <td class="py-2 px-3">${a.tanggal}</td>
-                        <td class="py-2 px-3">${namaSiswa}</td>
-                        <td class="py-2 px-3">
-                            <span class="px-2 py-0.5 rounded text-xs font-medium 
-                                ${a.status === 'Hadir' ? 'bg-green-100 text-green-700' : 
-                                  a.status === 'Sakit' ? 'bg-blue-100 text-blue-700' : 
-                                  a.status === 'Izin' ? 'bg-yellow-100 text-yellow-700' : 'bg-red-100 text-red-700'}">
-                                ${a.status}
-                            </span>
-                        </td>
-                        <td class="py-2 px-3">
-                            <button onclick="hapusAbsen(${a.id})" class="text-red-500 hover:text-red-700 text-xs font-semibold">Hapus</button>
-                        </td>
-                    </tr>
-                `;
-            });
-            document.getElementById('tabelAbsenBody').innerHTML = htmlAbsen || `<tr><td colspan="4" class="py-4 text-center text-slate-400">Belum ada riwayat absensi.</td></tr>`;
-
-            // Render Nilai
-            let htmlNilai = '';
-            nilaiList.forEach(n => {
-                const siswa = siswaList.find(s => s.id == n.siswaId);
-                const namaSiswa = siswa ? siswa.nama : 'Siswa Dihapus';
-                htmlNilai += `
-                    <tr class="border-b border-slate-100">
-                        <td class="py-2 px-3 font-medium">${namaSiswa}</td>
-                        <td class="py-2 px-3">${n.mapel}</td>
-                        <td class="py-2 px-3">${n.tugas}</td>
-                        <td class="py-2 px-3">${n.ujian}</td>
-                        <td class="py-2 px-3 font-semibold text-emerald-700">${n.akhir}</td>
-                        <td class="py-2 px-3">
-                            <button onclick="hapusNilai(${n.id})" class="text-red-500 hover:text-red-700 text-xs font-semibold">Hapus</button>
-                        </td>
-                    </tr>
-                `;
-            });
-            document.getElementById('tabelNilaiBody').innerHTML = htmlNilai || `<tr><td colspan="6" class="py-4 text-center text-slate-400">Belum ada data nilai.</td></tr>`;
-
-            // Render Laporan Rekap
-            let htmlLaporan = '';
-            siswaList.forEach(s => {
-                const sAbsen = absenList.filter(a => a.siswaId == s.id);
-                const hadir = sAbsen.filter(a => a.status === 'Hadir').length;
-                const sakit = sAbsen.filter(a => a.status === 'Sakit').length;
-                const izin = sAbsen.filter(a => a.status === 'Izin').length;
-                const alpa = sAbsen.filter(a => a.status === 'Alpa').length;
-
-                const sNilai = nilaiList.filter(n => n.siswaId == s.id);
-                let totalNilai = 0;
-                sNilai.forEach(n => totalNilai += parseFloat(n.akhir));
-                const rataRata = sNilai.length > 0 ? (totalNilai / sNilai.length).toFixed(2) : '0';
-
-                htmlLaporan += `
-                    <tr>
-                        <td class="border border-slate-200 py-2 px-3">${s.nis}</td>
-                        <td class="border border-slate-200 py-2 px-3 font-medium">${s.nama}</td>
-                        <td class="border border-slate-200 py-2 px-3">${s.kelas}</td>
-                        <td class="border border-slate-200 py-2 px-3 text-center">${hadir}</td>
-                        <td class="border border-slate-200 py-2 px-3 text-center">${sakit}</td>
-                        <td class="border border-slate-200 py-2 px-3 text-center">${izin}</td>
-                        <td class="border border-slate-200 py-2 px-3 text-center">${alpa}</td>
-                        <td class="border border-slate-200 py-2 px-3 text-center font-semibold text-emerald-700">${rataRata}</td>
-                    </tr>
-                `;
-            });
-            document.getElementById('tabelLaporanBody').innerHTML = htmlLaporan || `<tr><td colspan="8" class="py-4 text-center text-slate-400">Belum ada data rekapitulasi.</td></tr>`;
-        }
-
-        // Jalankan saat pertama kali dibuka
-        renderAll();
-    </script>
+function saveAll(){
+  localStorage.setItem('siswa_dta', JSON.stringify(siswa));
+  localStorage.setItem('nilai1_dta', JSON.stringify(nilai1));
+  localStorage.setItem('nilai2_dta', JSON.stringify(nilai2));
+  localStorage.setItem('profil_dta', JSON.stringify(profil));
+}
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.sidebar button').forEach(b=>b.classList.remove('active'));
+  const btn = [...document.querySelectorAll('.sidebar button')].find(b=>b.getAttribute('onclick').includes(id));
+  if(btn) btn.classList.add('active');
+  renderAll();
+}
+function tambahSiswa(){
+  const nama=document.getElementById('namaSiswa').value.trim();
+  const nis=document.getElementById('nisSiswa').value.trim();
+  if(!nama||!nis) return alert('Isi Nama dan NIS!');
+  if(siswa.find(s=>s.nis===nis)) return alert('NIS sudah ada!');
+  siswa.push({nis,nama});
+  document.getElementById('namaSiswa').value='';document.getElementById('nisSiswa').value='';
+  saveAll(); renderAll();
+}
+function hapusSiswa(nis){ if(confirm('Hapus siswa ini?')){siswa=siswa.filter(s=>s.nis!==nis); delete nilai1[nis]; delete nilai2[nis]; saveAll(); renderAll();}}
+function updateNilai(sem,nis,mapel,val){
+  let target=sem==1?nilai1:nilai2;
+  if(!target[nis]) target[nis]={};
+  target[nis][mapel]=Number(val)||0;
+  saveAll(); renderAll();
+}
+function rataRata(obj){
+  if(!obj) return 0;
+  const v=Object.values(obj).filter(x=>x>0); if(v.length==0) return 0;
+  return (v.reduce((a,b)=>a+b,0)/v.length).toFixed(1);
+}
+function predikat(n){
+  n=Number(n); if(n>=90) return 'Mumtaz'; if(n>=80) return 'Jayyid Jiddan'; if(n>=70) return 'Jayyid'; if(n>=50) return 'Maqbul'; return 'Belum Tuntas';
+}
+function renderAll(){
+  document.getElementById('namaGuruDisplay').innerText=profil.nama;
+  document.getElementById('kopNamaGuru').innerText=profil.nama;
+  document.getElementById('kopMapel').innerText=profil.mapel;
+  document.getElementById('ttdNama').innerText=profil.nama;
+  document.getElementById('jmlSiswa').innerText=siswa.length;
+  document.getElementById('jmlLulus').innerText=Object.keys(nilai1).length;
+  document.getElementById('tbodySiswa').innerHTML=siswa.map(s=>`<tr><td>${s.nis}</td><td>${s.nama}</td><td class="no-print"><button onclick="hapusSiswa('${s.nis}')">Hapus</button></td></tr>`).join('') || '<tr><td colspan=3>Belum ada siswa</td></tr>';
+  document.getElementById('tbodyNilai1').innerHTML=siswa.map(s=>{
+    const n=nilai1[s.nis]||{};
+    return `<tr><td>${s.nama}</td>${['quran','akhlak','fiqih','arab','tahfidz'].map(m=>`<td><input type="number" min="0" max="100" value="${n[m]||''}" onchange="updateNilai(1,'${s.nis}','${m}',this.value)"></td>`).join('')}<td><b>${rataRata(n)}</b></td></tr>`;
+  }).join('') || '<tr><td colspan=7>Tambah siswa dulu</td></tr>';
+  document.getElementById('tbodyNilai2').innerHTML=siswa.map(s=>{
+    const n=nilai2[s.nis]||{};
+    return `<tr><td>${s.nama}</td>${['quran','akhlak','fiqih','arab','tahfidz'].map(m=>`<td><input type="number" min="0" max="100" value="${n[m]||''}" onchange="updateNilai(2,'${s.nis}','${m}',this.value)"></td>`).join('')}<td><b>${rataRata(n)}</b></td></tr>`;
+  }).join('');
+  document.getElementById('tbodyRaport').innerHTML=siswa.map((s,i)=>{
+    const r1=Number(rataRata(nilai1[s.nis])); const r2=Number(rataRata(nilai2[s.nis]));
+    const akhir=((r1+r2)/2||r1||r2||0).toFixed(1);
+    return `<tr><td>${i+1}</td><td>${s.nama}</td><td>${s.nis}</td><td>${r1||0}</td><td>${r2||0}</td><td><b>${akhir}</b></td><td>${predikat(akhir)}</td></tr>`;
+  }).join('');
+  document.getElementById('pNama').value=profil.nama; document.getElementById('pNip').value=profil.nip; document.getElementById('pMapel').value=profil.mapel; document.getElementById('pHp').value=profil.hp;
+}
+function simpanProfil(){
+  profil={nama:document.getElementById('pNama').value||'Guru DTA', nip:document.getElementById('pNip').value, mapel:document.getElementById('pMapel').value, hp:document.getElementById('pHp').value};
+  saveAll(); renderAll(); alert('Profil berhasil disimpan!');
+}
+renderAll();
+</script>
 </body>
 </html>
